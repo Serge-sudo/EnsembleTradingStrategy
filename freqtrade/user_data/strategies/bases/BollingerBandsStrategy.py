@@ -5,6 +5,9 @@ class BollingerBandsStrategy(IStrategy):
     bb_period = 20
     bb_deviation = 2.0
 
+    def get_name(self) -> str:
+        return "bollinger_bands_strategy"
+
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         import talib.abstract as ta
         upperband, middleband, lowerband = ta.BBANDS(dataframe['close'], timeperiod=self.bb_period, nbdevup=self.bb_deviation, nbdevdn=self.bb_deviation, matype=0)

@@ -6,6 +6,9 @@ class RSIStrategy(IStrategy):
     rsi_buy_threshold = 50
     rsi_sell_threshold = 40
 
+    def get_name(self) -> str:
+        return "rsi_strategy"
+
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         import talib.abstract as ta
         dataframe['rsi'] = ta.RSI(dataframe, timeperiod=self.rsi_period)
