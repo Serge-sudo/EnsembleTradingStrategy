@@ -1,11 +1,13 @@
 from freqtrade.strategy.interface import IStrategy
 from pandas import DataFrame
-from bases.MAStrategy import MAStrategy
-from bases.RSIStrategy import RSIStrategy
 from bases.SMAOffset import SMAOffset
-from bases.BollingerBandsStrategy import BollingerBandsStrategy
-from bases.SMAOffsetProtectOptV0 import SMAOffsetProtectOptV0
-from bases.CombinedBinHAndClucV8 import CombinedBinHAndClucV8
+from bases.SMAOffsetProtectOpt import SMAOffsetProtectOpt
+from bases.DimondStrategy import Diamond
+from bases.ZeusStrategy import Zeus
+from bases.GodStrategy import GodStraNew
+from bases.FSampleStrategy import FSampleStrategy
+from bases.TheRealPullback import TheRealPullback
+from bases.PatternRecognition import PatternRecognition
 from catboost import CatBoostClassifier, Pool, sum_models
 
 class EnsembleStrategy(IStrategy):
@@ -13,11 +15,13 @@ class EnsembleStrategy(IStrategy):
 		super().__init__(*args, **kwargs)
 		self.base_strategies = [
 			SMAOffset(*args, **kwargs),
-			# MAStrategy(*args, **kwargs),
-			# RSIStrategy(*args, **kwargs),
-			# BollingerBandsStrategy(*args, **kwargs),
-			SMAOffsetProtectOptV0(*args, **kwargs),
-			# CombinedBinHAndClucV8(*args, **kwargs)
+			SMAOffsetProtectOpt(*args, **kwargs),
+			GodStraNew(*args, **kwargs),
+			Zeus(*args, **kwargs),
+			Diamond(*args, **kwargs),
+			FSampleStrategy(*args, **kwargs),
+			TheRealPullback(*args, **kwargs),
+			PatternRecognition(*args, **kwargs)
 		]
 
 	def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:

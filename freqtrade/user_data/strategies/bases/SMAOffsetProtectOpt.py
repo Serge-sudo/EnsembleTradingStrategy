@@ -19,18 +19,6 @@ import technical.indicators as ftt
 SMA = 'SMA'
 EMA = 'EMA'
 
-# Buy hyperspace params:
-#buy_params = {
-#	"base_nb_candles_buy": 20,
-#	"ewo_high": 6,
-#	"fast_ewo": 50,
-#	"slow_ewo": 200,
-#	"low_offset": 0.958,
-#	"buy_trigger": "EMA",
-#	"ewo_high": 2.0,
-#	"ewo_low": -16.062,
-#	"rsi_buy": 51,
-#}
 
 buy_params = {
 	"base_nb_candles_buy": 20,
@@ -43,13 +31,6 @@ buy_params = {
 	"slow_ewo": 200,  # value loaded from strategy
 	"buy_trigger": "EMA",
 }
-
-# Sell hyperspace params:
-#sell_params = {
-#	"base_nb_candles_sell": 20,
-#	"high_offset": 1.012,
-#	"sell_trigger": "EMA",
-#}
 
 # Sell hyperspace params:
 sell_params = {
@@ -68,7 +49,7 @@ def EWO(dataframe, ema_length=5, ema2_length=35):
 	return emadif
 
 
-class SMAOffsetProtectOptV0(IStrategy):
+class SMAOffsetProtectOpt(IStrategy):
 	INTERFACE_VERSION = 2
 
 	# ROI table:
@@ -181,22 +162,6 @@ class SMAOffsetProtectOptV0(IStrategy):
 			dataframe[f'ma_sell_{val}'] = ta.EMA(dataframe, timeperiod=val)
 
 
-		# ---------------- original code -------------------
-		##SMAOffset
-		#if self.buy_trigger.value == 'EMA':
-		#	dataframe['ma_buy'] = ta.EMA(dataframe, timeperiod=self.base_nb_candles_buy.value)
-		#else:
-		#	dataframe['ma_buy'] = ta.SMA(dataframe, timeperiod=self.base_nb_candles_buy.value)
-		#
-		#if self.sell_trigger.value == 'EMA':
-		#	dataframe['ma_sell'] = ta.EMA(dataframe, timeperiod=self.base_nb_candles_sell.value)
-		#else:
-		#	dataframe['ma_sell'] = ta.SMA(dataframe, timeperiod=self.base_nb_candles_sell.value)
-		#
-		#dataframe['ma_offset_buy'] = dataframe['ma_buy'] * self.low_offset.value
-		#dataframe['ma_offset_sell'] = dataframe['ma_sell'] * self.high_offset.value
-		# ------------ end original code --------------------
-
 		# Elliot
 		dataframe['EWO'] = EWO(dataframe, self.fast_ewo.value, self.slow_ewo.value)
 
@@ -226,24 +191,6 @@ class SMAOffsetProtectOptV0(IStrategy):
 			)
 		)
 
-		# ---------------- original code -------------------
-		#conditions.append(
-		#	(
-		#		(dataframe['close'] < dataframe['ma_offset_buy']) &
-		#		(dataframe['EWO'] > self.ewo_high.value) &
-		#		(dataframe['rsi'] < self.rsi_buy.value) &
-		#		(dataframe['volume'] > 0)
-		#	)
-		#)
-
-		#conditions.append(
-		#	(
-		#		(dataframe['close'] < dataframe['ma_offset_buy']) &
-		#		(dataframe['EWO'] < self.ewo_low.value) &
-		#		(dataframe['volume'] > 0)
-		#	)
-		#)
-		# ------------ end original code --------------------
 
 		if conditions:
 			dataframe.loc[
@@ -264,14 +211,6 @@ class SMAOffsetProtectOptV0(IStrategy):
 		)
 
 
-		# ---------------- original code -------------------
-		#conditions.append(
-		#	(
-		#		(dataframe['close'] > dataframe['ma_offset_sell']) &
-		#		(dataframe['volume'] > 0)
-		#	)
-		#)
-		# ------------ end original code --------------------
 
 		if conditions:
 			dataframe.loc[
