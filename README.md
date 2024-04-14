@@ -1,1 +1,1 @@
-# assemblyTradingStrategy
+# EnsembleTradingStrategy
